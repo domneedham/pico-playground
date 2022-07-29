@@ -7,7 +7,7 @@ class LED:
     def __init__(self, scheduler, mqtt):
         self.scheduler = scheduler
         self.mqtt = mqtt
-        self.led = Pin("LED", Pin.OUT, value=1)
+        self.led = Pin("LED", Pin.OUT)
         # scheduler.schedule(name="led", duration=1000,
         #                    callback=self.led_toggle_callback)
         mqtt.register_topic_callback("set", self.mqtt_set_state_callback)

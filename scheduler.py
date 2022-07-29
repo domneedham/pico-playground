@@ -14,7 +14,6 @@ class Scheduler:
         self.schedules = []
 
     def start(self):
-        self.start = time.ticks_ms()
         self.timer = Timer(-1)
         self.timer.init(period=1, mode=Timer.PERIODIC,
                         callback=self.event_callback)
