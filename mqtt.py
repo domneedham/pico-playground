@@ -1,5 +1,4 @@
 import time
-from led import LED
 from umqtt.simple import MQTTClient
 from configuration import mqtt_server, mqtt_prefix, mqtt_base_topic
 from util import singleton
@@ -53,7 +52,7 @@ class MQTT:
             if t == c.topic:
                 c.callback(topic, msg)
 
-    def send_event(self, topic, msg):
+    def send_event(self, topic: str, msg: str):
         if topic == "":
             topic = mqtt_base_topic
         else:
