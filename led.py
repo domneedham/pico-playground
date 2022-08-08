@@ -1,17 +1,17 @@
 from machine import Pin
+from mqtt import MQTT
+from scheduler import Scheduler
 from util import singleton
 
 
 @singleton
 class LED:
-    def __init__(self, scheduler, mqtt):
+    def __init__(self, scheduler: Scheduler, mqtt: MQTT):
         self.scheduler = scheduler
         self.mqtt = mqtt
         self.led = Pin("LED", Pin.OUT)
-        # scheduler.schedule(name="led", duration=1000,
-        #                    callback=self.led_toggle_callback)
         mqtt.register_topic_callback("set", self.mqtt_set_state_callback)
-        self.publish_state()
+        mqtt.register_state_callback("state", self.mqtt_state_callback)
 
     def toggle(self):
         self.led.toggle()
@@ -41,7 +41,14 @@ class LED:
             self.turn_off()
 
     def publish_state(self):
-        state = '{"state": "OFF"}'
+        self.mqtt.send_state()
+
+    def get_state(self):
+        state = "OFF"
         if self.is_on():
-            state = '{"state": "ON"}'
-        self.mqtt.send_event("", state)
+            state = "ON"
+        return state
+
+    def mqtt_state_callback(self):
+        state = self.get_state()
+        return str(state)

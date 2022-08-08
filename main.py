@@ -14,6 +14,7 @@ wlan = WLAN(scheduler)
 mqtt = MQTT(scheduler)
 led = LED(scheduler, mqtt)
 pico_temperature = PicoTemperature(scheduler, mqtt)
+mqtt.send_state()
 print("Configured")
 
 print("")
